@@ -34,8 +34,10 @@
     "commander": "12.0.0",
     "conf": "12.0.0",
     "ky": "1.2.3",
+    "open": "10.1.0",
     "ora": "8.0.1",
     "prompts": "2.4.2",
+    "terminal-link": "3.0.0",
     "ts-pattern": "5.1.1",
     "update-notifier": "7.0.0",
     "yargs": "17.7.2"

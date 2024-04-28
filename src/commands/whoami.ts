@@ -1,7 +1,8 @@
 import { Option } from '@swan-io/boxed';
+import chalk from 'chalk';
 import ky from 'ky';
 import ora from 'ora';
-import prompts from 'prompts';
+import terminalLink from 'terminal-link';
 import { P, match } from 'ts-pattern';
 
 import { conf } from '@/config/store.js';
@@ -12,7 +13,15 @@ export default async () => {
   const token = await match(githubToken)
     .with(Option.P.Some(P.select()), (token) => token)
     .with(Option.P.None, async () => {
-      console.log('Your account is not connected.');
+      const personalTokenLink = terminalLink(
+        '▶︎ Create your personal token',
+        'https://github.com/settings/tokens/new',
+      );
+      console.log('There is no personal token connected.');
+      console.log(
+        `Provide one by first creating it in your github profile settings, and then by providing it to the ${chalk.blue('ssh-vault connect')} command.`,
+      );
+      console.log(personalTokenLink);
       process.exit(0);
     })
     .exhaustive();
@@ -27,6 +36,8 @@ export default async () => {
         'X-GitHub-Api-Version': '2022-11-28',
       },
     })
-    .json<{ login: string }>();
-  spinner.succeed(`Logged as ${userDetails.login}`);
+    .json<{ login: string; html_url: string }>();
+
+  const profileLink = terminalLink(userDetails.login, userDetails.html_url);
+  spinner.succeed(`Logged as ${chalk.blue(profileLink)}`);
 };
