@@ -7,11 +7,13 @@ import open from '@/commands/open.js';
 import sync from '@/commands/sync.js';
 import whoami from '@/commands/whoami.js';
 
+import packageJson from '../package.json';
+
 program
   // Metadata for the CLI
   .name('ssh-vault')
-  .description('Securely manage your ssh keys')
-  .version('0.0.1');
+  .description(packageJson.description)
+  .version(packageJson.version);
 
 program
   // ssh-vault connect
@@ -26,7 +28,7 @@ program
   .action(disconnect);
 
 program
-  // ssh-vault disconnect
+  // ssh-vault whoami
   .command('whoami')
   .description('Show the profile linked to the provided github personal token.')
   .action(whoami);
